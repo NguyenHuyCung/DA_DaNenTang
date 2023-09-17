@@ -5,15 +5,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from "react-native-linear-gradient";
 
 
-const OnpressDangKy = ({navigation}) => {
-  Alert.alert('Thông báo', 'Bạn đã đăng ký thành công',[
-    {
-      text:'Quay lại Đăng Nhập',
-      Onpress:()=> navigation.navigate('LoginScreen')
-    }
-  ])
-};
-
 
 const RegisterScreen =({navigation})=> {
   

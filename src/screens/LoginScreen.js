@@ -2,6 +2,7 @@ import React from "react";
 import {  StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from "react-native-linear-gradient";
+import HomeScreen from "./HomeScreen/HomeScreen";
 
 
 const LoginScreen=({navigation})=> {
@@ -52,7 +53,7 @@ const LoginScreen=({navigation})=> {
               {/**button Login */}
               <View style={{marginTop: -30}}>
                   <LinearGradient style={{padding:10,width:'100%', borderRadius:30}} colors={['#FFFFFF','#1459A6']} useAngle={true} angle={90}>
-                    <TouchableOpacity style = {styles.buttonLogin} >
+                    <TouchableOpacity style = {styles.buttonLogin} onPress={()=>navigation.navigate('HomeScreen')} >
                       <Text style={{fontSize : 20, fontWeight:'bold', color:'white'}}>
                         ĐĂNG NHẬP
                       </Text>
