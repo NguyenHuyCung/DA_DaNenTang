@@ -3,7 +3,7 @@ import React from 'react'
 
 
 
-const TicketTwo = () => {
+const TicketTwo = ({navigation}) => {
   return (
     <View>
       <StatusBar backgroundColor={'#002A5C'} barStyle={'light-content'} />
@@ -23,6 +23,11 @@ const TicketTwo = () => {
       <View style={styles.buttonBuy}>
         <TouchableOpacity >
           <Text style={{fontSize:20}}>Mua Vé </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={{justifyContent: 'center', alignItems: 'center', marginTop:50}}>
+        <TouchableOpacity onPress={()=>navigation.goBack()}>
+          <Text style={{color : 'blue'}}>Quay lại</Text>
         </TouchableOpacity>
       </View>
     </View>

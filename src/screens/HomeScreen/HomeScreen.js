@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 
 export default function HomeScreen() {
   return (
-    <Tab.Navigator barStyle={styles.fulltab} activeColor='#1459A6'>
+    <Tab.Navigator barStyle={styles.fulltab} activeColor='#1459A6' >
         <Tab.Screen name='TabHome' component={TabHome} options={{title:'Trang Chủ',tabBarIcon :'home-outline', tabBarColor:'#FFA200'}} />
         <Tab.Screen name='TabOrder' component={TabOrder} options={{title:'Đơn', tabBarIcon:'cart-outline', tabBarBadge:'1'}} />
         <Tab.Screen name='TabDetail' component={TabDetail} options={{title:'Xem Thêm', tabBarIcon:'reorder-horizontal' }} />

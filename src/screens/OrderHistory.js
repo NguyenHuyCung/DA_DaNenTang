@@ -1,21 +1,21 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-const OrderHistory = () => {
+const OrderHistory = ({navigation}) => {
   return (
     <View>
         {/**header */}
-        <View>
-            <Text>Lịch sử mua hàng</Text>
+        <View style={{justifyContent: 'center', alignItems: 'center', marginTop:10}}>
+            <Text style={{fontSize:20}}>Lịch sử mua hàng</Text>
         </View>
         {/**body */}
-        <ScrollView>
+        <ScrollView style={{marginTop:10}}>
             <Text>body chua lịch sử</Text>
         </ScrollView>
         {/**button delete */}
-        <View>
-            <TouchableOpacity>
-                <Text>Xóa toàn bộ</Text>
+        <View style={{justifyContent: 'center', alignItems: 'center', marginTop:40}}>
+            <TouchableOpacity onPress={()=>navigation.navigate('TabDetail')}>
+                <Text style={{color:'blue'}}>Quay lại</Text>
             </TouchableOpacity>
         </View>
     </View>

@@ -1,11 +1,29 @@
-import React from "react";
-import {  StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import {  StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from "react-native-linear-gradient";
 import HomeScreen from "./HomeScreen/HomeScreen";
+import axios from "axios";
 
 
 const LoginScreen=({navigation})=> {
+
+  {/**handle input dang nhap */}
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    if (email.length < 3 || password.length <3 ) {
+      Alert.alert('Lỗi', 'vui lòng nhập thông tin chính xác');
+    } else {
+      //goi axios
+    
+
+      // Chuyển đến trang chủ khi tên đăng nhập hợp lệ
+      navigation.navigate('HomeScreen');
+    }
+  }
+
   return (
     <View>
         {/**logo */}
@@ -37,7 +55,7 @@ const LoginScreen=({navigation})=> {
                   </Text>
                   <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
                     <Icon name='envelope' />
-                    <TextInput style = {styles.texttk} placeholder="Email của trường HUCE" />
+                    <TextInput style = {styles.texttk} placeholder="Email của trường HUCE" value={email} onChangeText={text => setEmail(text)} />
                   </View>
               </View>
               {/**mat khau */}
@@ -47,13 +65,15 @@ const LoginScreen=({navigation})=> {
                   </Text>
                   <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
                   <Icon name='lock' size={15} />
-                  <TextInput style = {styles.texttk} placeholder="Mật khẩu từ 8-16 kí tự" secureTextEntry={true} />
+                  <TextInput style = {styles.texttk} placeholder="Mật khẩu từ 8-16 kí tự" secureTextEntry={true}
+                            value={password} onChangeText={text => setPassword(text)}
+                  />
                   </View>
               </View>
               {/**button Login */}
               <View style={{marginTop: -30}}>
                   <LinearGradient style={{padding:10,width:'100%', borderRadius:30}} colors={['#FFFFFF','#1459A6']} useAngle={true} angle={90}>
-                    <TouchableOpacity style = {styles.buttonLogin} onPress={()=>navigation.navigate('HomeScreen')} >
+                    <TouchableOpacity style = {styles.buttonLogin} onPress={handleLogin} >
                       <Text style={{fontSize : 20, fontWeight:'bold', color:'white'}}>
                         ĐĂNG NHẬP
                       </Text>
