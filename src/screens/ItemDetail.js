@@ -1,8 +1,13 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native'
 import React, {useState} from 'react'
 
+global.mycart = [];
 
-const ItemDetail = ({navigation}) => {
+
+const ItemDetail = ({route,navigation}) => {
+
+    {/**display detail */}
+    const {menu} = route.params;
 
     {/**display so luong */}
     const [number, setNumber] = useState(1);
@@ -15,14 +20,46 @@ const ItemDetail = ({navigation}) => {
         }
     };
     //handle add to order
+    // const [list, setList] = useState([]);
+
+
     const handleAddOrder = ()=>{
-            Alert.alert ('Thông báo', 'Bạn đã thêm vào đơn !', [
-                {
-                    text: 'Ok',
-                    onPress: ()=>[],
-                }
-            ]);
+
+            
+        // setList(global.mycart);
+        // const newList = [{menu},...global.mycart];
+        // setList(newList);
+        // global.mycart = newList;
+        const updatedCart = [...global.mycart];
+
+        // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+        const existingProductIndex = updatedCart.findIndex((item) => item.menu.menuName === menu.menuName);
+      
+        if (existingProductIndex !== -1) {
+          // Nếu sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng của nó
+          updatedCart[existingProductIndex].quantity += number;
+        } else {
+          // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm nó vào giỏ hàng
+          updatedCart.push({ menu, quantity: number });
+        }
+      
+        // Cập nhật giỏ hàng toàn cục
+        global.mycart = updatedCart;
+
+        Alert.alert ('Thông báo', 'Bạn đã thêm vào đơn : \n ' +menu.menuName +'\n số lượng : ' +number, [
+            {
+                text: 'Ok',
+                onPress: ()=>[],
+            }
+        ]);
+        
+        console.log(global.mycart);
+            
+
+            
     };
+
+
 
 
   return (
@@ -32,12 +69,12 @@ const ItemDetail = ({navigation}) => {
         </View>
         <View >
             <View style={{justifyContent: 'center',alignItems: 'center',marginBottom:10, marginTop:10}}>
-                <Image source={require('../screens/HomeScreen/components/th.png')} style={{height:70, width:70, }} />
-                <Text>Tên sản phẩm:</Text>
+                <Image source={{uri: menu.menuImage}} style={{height:70, width:70, }} />
+                <Text style={{fontSize:20}}>{menu.menuName} </Text>
             </View>
-            <Text>Mô tả :</Text>
+            <Text style={{marginLeft:10}}>Mô tả : {menu.menuDescription}</Text>
         </View>
-        <View style={{marginTop:10}}>
+        <View style={{marginTop:10, marginLeft:10}}>
             <Text>Số lượng :</Text>
             {/**display so luong */}
             <View style={styles.container}>

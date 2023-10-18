@@ -17,10 +17,10 @@ const LoginScreen=({navigation})=> {
       Alert.alert('Lỗi', 'vui lòng nhập thông tin chính xác');
     } else {
       //goi axios
-    
-
+      
       // Chuyển đến trang chủ khi tên đăng nhập hợp lệ
       navigation.navigate('HomeScreen');
+
     }
   }
 
