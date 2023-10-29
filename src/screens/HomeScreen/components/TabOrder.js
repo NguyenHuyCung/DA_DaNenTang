@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, FlatList, Image } from 'react-native'
 import React , {useEffect, useState} from 'react'
 import { RadioButton } from 'react-native-paper'; 
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useNavigation } from '@react-navigation/native'; 
 
 const TabOrder =({navigation, route, mycart})=> {
     
