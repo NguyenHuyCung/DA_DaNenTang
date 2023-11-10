@@ -11,6 +11,7 @@ import OrderHistory from './src/screens/OrderHistory';
 import TicketLunch from './src/screens/TicketLunch';
 import TicketEvening from './src/screens/TicketEvening';
 import ItemDetail from './src/screens/ItemDetail';
+import Chat from './src/screens/Chat';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ const App = ({ navigation}:any)=>{
         return(
                 <NavigationContainer>
                         <Stack.Navigator screenOptions={{headerShown:false}}>
+                                {/* <Stack.Screen name='Chat' component={Chat} /> */}
                                 <Stack.Screen name='LoginScreen' component={LoginScreen}  />
                                 <Stack.Screen name='RegisterScreen' component={RegisterScreen}/>
                                 <Stack.Screen name='HomeScreen' component={HomeScreen}  />

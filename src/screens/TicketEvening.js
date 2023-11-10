@@ -1,61 +1,118 @@
-import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import {Button, StyleSheet, Text, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {CheckBox} from 'react-native-elements';
+import moment from 'moment';
+import 'moment/locale/vi';
+import {useAppDispatch, useAppSelector} from './store/hooks';
+import { setticketEvening } from '../slice/infoUser';
 
-
-
+moment.locale('vi');
 
 const TicketEvening = ({navigation}) => {
+  const dispatch = useAppDispatch()
+  //lay thoi gian
+  // Lấy ngày hiện tại
+  const currentDate = moment();
+  // Tìm ngày đầu tiên của tuần
+  const startOfWeek = currentDate.clone().startOf('isoWeek');
+  // Tìm ngày cuối cùng của tuần
+  const endOfWeek = currentDate.clone().endOf('isoWeek');
+  // Hiển thị thông tin về thứ
+  const dayOfWeek = currentDate.format('dddd');
+
+  const [titleCheckbox, setTitleCheckbox] = useState('Chưa dùng vé hôm nay');
+  const [titleButton, setTitleButton] = useState('Thanh toán');
+  const [checked, setChecked] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false); // Thêm trạng thái cho button
+  const network = useAppSelector(state => state.network.ipv4Address);
+  const handleButton = async () => {
+    if (!buttonDisabled) {
+      try {
+        const response = await axios.post(`${network}/change-status-ticket`, {
+          email: email,
+        });
+        if (response.data.success) {
+          setChecked(!checked);
+          setTitleCheckbox('Đã dùng vé hôm nay !');
+          setTitleButton('Đã thanh toán');
+          setButtonDisabled(true);
+          dispatch(setticketEvening(false))
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+
+    // Khoảng thời gian từ 10:30 đến 13:00
+    const isButtonEnabled =
+      (currentHour === 18 && currentMinute >= 30) ||
+      (currentHour === 19 && currentMinute <= 30);
+
+    setButtonDisabled(!isButtonEnabled);
+  }, []);
+
+  
+
   return (
     <View>
-      <StatusBar backgroundColor={'#002A5C'} barStyle={'light-content'} />
-      <View style={styles.headerScreen}>
-        <Text style={{fontSize:20,color:'#FFFFFF'}}>Vé ăn tối theo tuần</Text>
-        <Text style={{fontSize:20,color:'#FFFFFF'}}>Căng-tin HUCE</Text>
+      <View style={{marginTop: 10}}>
+        <Text style={styles.text}>Vé ăn theo tuần buổi tối :</Text>
+        <Text style={styles.text}>
+          Thời gian sử dụng : {'\n'} từ ngày {startOfWeek.format('DD/MM/YYYY')}{' '}
+          đến ngày {endOfWeek.format('DD/MM/YYYY')}
+        </Text>
+        <Text style={styles.text}>
+          Vé chỉ được sử dụng từ 6h30 đến 7h30 trong ngày
+        </Text>
+        <Text style={styles.text}>
+          Thông tin vé HÔM NAY ({dayOfWeek} {currentDate.format('DD/MM/YYYY')})
+          :{' '}
+        </Text>
       </View>
-      <View style={styles.descriptionText}>
-        <Text style={{fontSize:20}}>Mô tả :</Text>
-        <Text style={{fontSize:15}}>  Vé ăn buổi tối theo tuần giúp bạn thanh toán một món  (0 -{'>'} 26000 đ) :</Text>
-        <Text style={{fontSize:15}}>    Cơm rang thập cẩm, Mì tôm trứng, Bánh mỳ Pate, Bánh Mỳ thập cẩm, ... {'\n'}</Text>
-        <Text style={{fontSize:20}}>Hạn sử dụng : </Text> 
-        <Text style={{fontSize:15}}>        đến hết tuần tính từ thời điểm mua vé {'\n'} </Text>
-        <Text style={{fontSize:20}}>Sử dụng tại bàn ăn của Căng-tin, không áp dụng hình thức đặt onl {'\n'}</Text>
-        <Text style={{fontSize:15}}>Giá vé : 120,000 VND (Một trăm hai mười nghìn đồng) </Text>
-      </View>
-      <View style={styles.buttonBuy}>
-        <TouchableOpacity >
-          <Text style={{fontSize:20}}>Mua Vé </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{justifyContent: 'center', alignItems: 'center', marginTop:50}}>
-        <TouchableOpacity onPress={()=>navigation.goBack()}>
-          <Text style={{color : 'blue'}}>Quay lại</Text>
-        </TouchableOpacity>
+      <CheckBox
+        title={titleCheckbox}
+        value={checked}
+        onChange={() => setChecked(!checked)}
+      />
+      <Button
+        title={titleButton}
+        onPress={handleButton}
+        disabled={buttonDisabled}
+      />
+      <View style={{marginTop: 60}}>
+        <Button title="Quay lại" onPress={() => navigation.goBack()} />
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default TicketEvening
+export default TicketEvening;
 
 const styles = StyleSheet.create({
-  descriptionText:{
-    marginTop:20
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  buttonBuy :{
-    justifyContent:'center',
-    alignItems:'center',
-    marginTop : 30,
-    backgroundColor:'green',
-    borderRadius:30,
-    height:50
-
-    
+  cameraContainer: {
+    flex: 1,
+    width: '100%',
   },
-  headerScreen:{
-    alignContent:'center',
-    alignItems:'center',
-    backgroundColor:'#002A5C',
-    height:70
-  }
-
-})
+  camera: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
+    marginLeft: 10,
+    marginTop: 10,
+    color: 'black',
+  },
+});
